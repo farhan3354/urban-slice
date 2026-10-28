@@ -4,11 +4,6 @@ import { AdminLoginForm } from "./AdminLoginForm";
 
 export const dynamic = "force-dynamic";
 
-export const metadata = {
-  title: "Admin Sign In · Urban Slice Pizza",
-  robots: { index: false, follow: false },
-};
-
 export default function AdminLoginPage() {
   return (
     <Suspense
