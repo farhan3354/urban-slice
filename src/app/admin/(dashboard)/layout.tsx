@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { AdminGuard } from "@/components/admin/AdminGuard";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Admin · Urban Slice Pizza",
   robots: { index: false, follow: false },
