@@ -20,6 +20,20 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { extractErrors, type ApiError } from "@/components/admin/types";
 
 export default function AdminLoginPage() {
+  return (
+    <React.Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-background">
+          <Loader2 className="size-8 animate-spin text-primary" />
+        </div>
+      }
+    >
+      <AdminLoginForm />
+    </React.Suspense>
+  );
+}
+
+function AdminLoginForm() {
   const router = useRouter();
   const params = useSearchParams();
   const nextParam = params.get("next") || "/admin";
