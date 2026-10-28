@@ -8,7 +8,9 @@ export function LiveOrderRefresher({ intervalMs = 30000 }: { intervalMs?: number
   const router = useRouter();
   React.useEffect(() => {
     const id = setInterval(() => {
-      router.refresh();
+      React.startTransition(() => {
+        router.refresh();
+      });
     }, intervalMs);
     return () => clearInterval(id);
   }, [router, intervalMs]);

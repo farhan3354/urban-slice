@@ -47,7 +47,7 @@ export function AdminLoginForm() {
         return;
       }
       toast.success(`Welcome back, ${data.admin?.name || "Admin"}`);
-      router.replace(nextParam);
+      window.location.href = nextParam;
     } catch (e: any) {
       setErrors([{ field: "form", message: e?.message || "Network error" }]);
     } finally {

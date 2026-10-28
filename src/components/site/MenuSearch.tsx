@@ -24,14 +24,22 @@ export function MenuSearch({
     return () => clearTimeout(t);
   }, [value]);
 
+  const isMounted = React.useRef(false);
   React.useEffect(() => {
+    isMounted.current = true;
+  }, []);
+
+  React.useEffect(() => {
+    if (!isMounted.current) return;
     const cur = params.get("q") || "";
     if (debounced === cur) return;
     const next = new URLSearchParams(params.toString());
     if (debounced) next.set("q", debounced);
     else next.delete("q");
     const qs = next.toString();
-    router.replace(qs ? `/menu?${qs}` : "/menu", { scroll: false });
+    React.startTransition(() => {
+      router.replace(qs ? `/menu?${qs}` : "/menu", { scroll: false });
+    });
   }, [debounced, params, router]);
 
   return (

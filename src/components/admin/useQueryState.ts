@@ -1,14 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 
-// Tiny helper to manage query params with browser history (push, not replace).
+// Tiny helper to manage query params with browser history.
 export function useQueryState(
   key: string,
   defaultValue = "",
 ): [string, (v: string, opts?: { replace?: boolean }) => void] {
-  const router = useRouter();
   const pathname = usePathname() ?? "/";
   const initial = React.useMemo(() => {
     if (typeof window === "undefined") return defaultValue;
@@ -33,10 +32,10 @@ export function useQueryState(
       if (opts?.replace) {
         window.history.replaceState(null, "", url);
       } else {
-        router.push(url);
+        window.history.pushState(null, "", url);
       }
     },
-    [key, defaultValue, pathname, router],
+    [key, defaultValue, pathname],
   );
 
   React.useEffect(() => {

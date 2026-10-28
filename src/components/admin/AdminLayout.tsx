@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import {
   LayoutDashboard,
@@ -133,7 +133,6 @@ function UserCard({
 }
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
   const pathname = usePathname();
   const [admin, setAdmin] = React.useState<AdminUser | null>(null);
   const [authed, setAuthed] = React.useState(false);
@@ -147,13 +146,13 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         if (cancelled) return;
         if (res.status === 401) {
           const next = encodeURIComponent(pathname || "/admin");
-          router.replace(`/admin/login?next=${next}`);
+          window.location.replace(`/admin/login?next=${next}`);
           return;
         }
         const data = await res.json();
         if (!data?.admin) {
           const next = encodeURIComponent(pathname || "/admin");
-          router.replace(`/admin/login?next=${next}`);
+          window.location.replace(`/admin/login?next=${next}`);
           return;
         }
         setAdmin(data.admin);
@@ -161,14 +160,14 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       } catch {
         if (!cancelled) {
           const next = encodeURIComponent(pathname || "/admin");
-          router.replace(`/admin/login?next=${next}`);
+          window.location.replace(`/admin/login?next=${next}`);
         }
       }
     })();
     return () => {
       cancelled = true;
     };
-  }, [router, pathname]);
+  }, [pathname]);
 
   const handleLogout = async () => {
     try {
@@ -177,7 +176,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       // ignore
     }
     toast.success("Signed out");
-    router.replace("/admin/login");
+    window.location.href = "/admin/login";
   };
 
   return (

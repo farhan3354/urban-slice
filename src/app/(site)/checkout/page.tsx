@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -43,7 +42,6 @@ import { WhatsAppIcon } from "@/components/site/WhatsAppIcon";
 type FieldErrors = Record<string, string>;
 
 export default function CheckoutPage() {
-  const router = useRouter();
   const hydrated = useHydrated();
   const lines = useCartLines();
   const subtotal = useCartSubtotal();
@@ -158,7 +156,7 @@ export default function CheckoutPage() {
       }
       clear();
       toast.success("Order placed! Sending on WhatsApp to confirm.");
-      router.push(`/order/success?ref=${encodeURIComponent(data.orderRef)}`);
+      window.location.href = `/order/success?ref=${encodeURIComponent(data.orderRef)}`;
     } catch (e: any) {
       toast.error("Network error — please try again.");
     } finally {
