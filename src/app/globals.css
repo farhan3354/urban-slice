@@ -1,0 +1,288 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-poppins);
+  --font-urdu: var(--font-urdu);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  /* Urban Slice brand — black/red/gold matching the official menu */
+  --radius: 0.75rem;
+  --font-inter: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-poppins: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-urdu: "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Urdu Typesetting", Arial, sans-serif;
+  --background: #FFF8F0;          /* warm cream */
+  --foreground: #0f0f0f;          /* near-black */
+  --card: #FFFFFF;
+  --card-foreground: #0f0f0f;
+  --popover: #FFFFFF;
+  --popover-foreground: #0f0f0f;
+  --primary: #CC0000;             /* Urban Slice red — matches menu header bars */
+  --primary-foreground: #FFFFFF;
+  --secondary: #FFF0DC;
+  --secondary-foreground: #0f0f0f;
+  --muted: #F5ECE0;
+  --muted-foreground: #6B5E52;
+  --accent: #FFD700;              /* logo gold */
+  --accent-foreground: #1a0f00;
+  --destructive: #DC2626;
+  --border: #E8D5BC;
+  --input: #E8D5BC;
+  --ring: #CC0000;
+  --chart-1: #CC0000;
+  --chart-2: #FFD700;
+  --chart-3: #0f0f0f;
+  --chart-4: #4CAF50;
+  --chart-5: #888888;
+  --sidebar: #0f0f0f;             /* menu black */
+  --sidebar-foreground: #FFF8F0;
+  --sidebar-primary: #CC0000;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #1e1e1e;
+  --sidebar-accent-foreground: #FFD700;
+  --sidebar-border: #282828;
+  --sidebar-ring: #FFD700;
+}
+
+.dark {
+  --background: #0f0f0f;          /* menu black */
+  --foreground: #FFF8F0;
+  --card: #1a1a1a;
+  --card-foreground: #FFF8F0;
+  --popover: #1a1a1a;
+  --popover-foreground: #FFF8F0;
+  --primary: #CC0000;
+  --primary-foreground: #FFFFFF;
+  --secondary: #242424;
+  --secondary-foreground: #FFF8F0;
+  --muted: #242424;
+  --muted-foreground: #9a8f88;
+  --accent: #FFD700;
+  --accent-foreground: #0f0f0f;
+  --destructive: #DC2626;
+  --border: #2e2e2e;
+  --input: #2e2e2e;
+  --ring: #CC0000;
+  --chart-1: #CC0000;
+  --chart-2: #FFD700;
+  --chart-3: #FFF8F0;
+  --chart-4: #4CAF50;
+  --chart-5: #9a9a9a;
+  --sidebar: #080808;
+  --sidebar-foreground: #FFF8F0;
+  --sidebar-primary: #CC0000;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #1e1e1e;
+  --sidebar-accent-foreground: #FFD700;
+  --sidebar-border: #2a2a2a;
+  --sidebar-ring: #FFD700;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-inter), system-ui, sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6, .font-display {
+    font-family: var(--font-poppins), system-ui, sans-serif;
+  }
+}
+
+/* Custom utilities */
+.font-display {
+  font-family: var(--font-poppins), system-ui, sans-serif;
+}
+
+/* Hide scrollbar for category chips */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Custom scrollbar for long lists */
+.thin-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+.thin-scroll::-webkit-scrollbar-track { background: transparent; }
+.thin-scroll::-webkit-scrollbar-thumb { background: #d4b896; border-radius: 6px; }
+.thin-scroll::-webkit-scrollbar-thumb:hover { background: #c4a87a; }
+
+/* Urban Slice dot-pattern background — subtle */
+.pizza-grid-bg {
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(204, 0, 0, 0.07) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+/* Hero overlay gradient — dark on left where text sits */
+.hero-overlay {
+  background:
+    linear-gradient(90deg, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.70) 35%, rgba(0,0,0,0.40) 70%, rgba(0,0,0,0.25) 100%),
+    linear-gradient(180deg, rgba(0,0,0,0.20) 0%, rgba(0,0,0,0.45) 50%, rgba(0,0,0,0.75) 100%);
+}
+
+/* Card hover lift */
+.lift {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px -10px rgba(204, 0, 0, 0.28);
+}
+
+/* Gold shimmer — for headings and badges */
+@keyframes gold-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.gold-shimmer {
+  background: linear-gradient(90deg, #FFD700 30%, #FFF8C0 50%, #FFD700 70%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gold-shimmer 3s linear infinite;
+}
+
+/* WhatsApp pulse */
+@keyframes wa-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+  50%       { box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
+}
+.wa-pulse {
+  animation: wa-pulse 2.2s ease-in-out infinite;
+}
+
+/* Red glow for primary buttons */
+.btn-glow:hover {
+  box-shadow: 0 6px 24px -4px rgba(204, 0, 0, 0.55);
+}
+
+/* Smooth Food Image Float */
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(1.5deg);
+  }
+}
+.animate-float {
+  animation: float-slow 4.5s ease-in-out infinite;
+}
+
+/* Reverse Float for secondary badges */
+@keyframes float-reverse {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+}
+.animate-float-reverse {
+  animation: float-reverse 5s ease-in-out infinite;
+}
+
+/* Pulsing Red Glow for deals & urgent CTAs */
+@keyframes pulse-glow-red {
+  0%, 100% {
+    box-shadow: 0 0 15px -2px rgba(204, 0, 0, 0.45);
+  }
+  50% {
+    box-shadow: 0 0 28px 4px rgba(204, 0, 0, 0.75);
+  }
+}
+.glow-red {
+  animation: pulse-glow-red 2.5s infinite;
+}
+
+/* Pulsing Gold Glow */
+@keyframes pulse-glow-gold {
+  0%, 100% {
+    box-shadow: 0 0 15px -2px rgba(255, 215, 0, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 26px 4px rgba(255, 215, 0, 0.65);
+  }
+}
+.glow-gold {
+  animation: pulse-glow-gold 3s infinite;
+}
+
+/* Modern Frosted Glass Panel */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.glass-panel-dark {
+  background: rgba(15, 15, 15, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Announcement bar marquee for small screens */
+@keyframes marquee-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.marquee-inner {
+  animation: marquee-scroll 22s linear infinite;
+}
+
+/* Sticky footer behavior */
+.admin-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.admin-main { flex: 1 0 auto; }
+
+/* Print receipt */
+@media print {
+  .no-print { display: none !important; }
+  .print-only { display: block !important; }
+}
+.print-only { display: none; }

@@ -1,0 +1,190 @@
+// Urban Slice Pizza — Prisma schema
+// Database: SQLite (local dev/demo). All complex structures stored as JSON strings.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ---------- Admin & Auth ----------
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  role         String   @default("admin") // "admin" | "super_admin"
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  audits       AuditEvent[]
+  sessions     Session[]
+
+  @@index([email])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  adminId      String
+  admin        AdminUser @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  token        String   @unique
+  expiresAt    DateTime
+  ip           String?
+  userAgent    String?
+  createdAt    DateTime @default(now())
+
+  @@index([adminId])
+  @@index([expiresAt])
+}
+
+// ---------- Menu ----------
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  imageUrl    String?
+  order       Int      @default(0)
+  active      Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  products     Product[]
+
+  @@index([active])
+  @@index([order])
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  categoryId String
+  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  basePrice   Float
+  imageUrl    String?
+  available   Boolean  @default(true)
+  featured    Boolean  @default(false)
+  popular     Boolean  @default(false)
+  prepTimeMin Int      @default(20)
+  promoPrice  Float?
+  tagsJson    String   @default("[]") // e.g. ["spicy","new"]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  options     ProductOptionGroup[]
+
+  @@index([categoryId])
+  @@index([available])
+  @@index([featured])
+  @@index([popular])
+}
+
+model ProductOptionGroup {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name      String  // "Size", "Crust", "Extra Toppings", "Dips"
+  key       String  // machine key: "size" | "crust" | "toppings" | "dips"
+  type      String  // "single" | "multiple"
+  required  Boolean @default(false)
+  min       Int     @default(0)
+  max       Int     @default(0)
+  order     Int     @default(0)
+  options   ProductOption[]
+
+  @@index([productId])
+}
+
+model ProductOption {
+  id            String  @id @default(cuid())
+  groupId       String
+  group         ProductOptionGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  name          String
+  priceModifier Float   @default(0)
+  order         Int     @default(0)
+  defaultSel    Boolean @default(false)
+
+  @@index([groupId])
+}
+
+// ---------- Deals & Coupons ----------
+
+model Deal {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String?
+  imageUrl    String?
+  price       Float
+  oldPrice     Float?
+  active      Boolean  @default(true)
+  startDate   DateTime?
+  endDate     DateTime?
+  couponCode  String?
+  itemsJson   String   @default("[]") // snapshot of included items: [{name, qty, note}]
+  badge       String?  // e.g. "Best Value"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([active])
+}
+
+// ---------- Orders ----------
+
+model Order {
+  id              String   @id @default(cuid())
+  orderRef        String   @unique
+  customerName    String
+  customerPhone   String
+  type            String   // "delivery" | "pickup"
+  address         String?
+  area            String?
+  notes           String?
+  itemsJson       String   // snapshot array
+  subtotal        Float
+  deliveryFee     Float    @default(0)
+  discount        Float    @default(0)
+  total           Float
+  status          String   @default("pending_whatsapp")
+  internalNotes   String?
+  couponCode      String?
+  whatsappSentAt  DateTime?
+  confirmedAt     DateTime?
+  completedAt     DateTime?
+  cancelledAt     DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([status])
+  @@index([customerPhone])
+  @@index([createdAt])
+  @@index([orderRef])
+}
+
+// ---------- Settings (key/value) ----------
+
+model RestaurantSetting {
+  id    String @id
+  value String
+}
+
+// ---------- Audit ----------
+
+model AuditEvent {
+  id        String   @id @default(cuid())
+  adminId   String?
+  admin     AdminUser? @relation(fields: [adminId], references: [id], onDelete: SetNull)
+  action    String
+  target    String?
+  metadata  String?
+  createdAt DateTime @default(now())
+
+  @@index([adminId])
+  @@index([createdAt])
+  @@index([action])
+}
